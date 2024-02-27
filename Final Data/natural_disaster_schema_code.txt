@@ -1,0 +1,18 @@
+Death_Rates
+-
+country VARCHAR(1000) FK >- Country_Coordinates.country
+code VARCHAR(3)
+year INTEGER
+drought_deaths INTEGER
+flood_deaths INTEGER
+earthquake_deaths INTEGER
+extreme_weather_deaths INTEGER
+extreme_temp_deaths INTEGER
+other_deaths INTEGER
+
+Country_Coordinates
+-
+country_code VARCHAR(3)
+latitude NUMERIC
+longitude NUMERIC
+country VARCHAR(1000) PK
