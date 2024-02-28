@@ -1,57 +1,78 @@
 // import csv w D3
-d3.csv("./joined_disaster_data.csv", function(data) {
+d3.csv("./joined_disaster_data.csv", (data) => {
+  console.log("text");
   // Set a variable for the column names
   let disaster_type = data.columns;
   let dropdownMenu = d3.select("#selDataset");
+  console.log(disaster_type);
 
   // Add options to the dropdown menu for each column name
-  disaster_type.slice(5,11).map((header) => {
-    dropdownMenu.append("option")
-      .text(header)
-      .property("value", header);
+  disaster_type.slice(5, 11).map((header) => {
+    dropdownMenu.append("option").text(header).property("value", header);
+  });
+  let dropdownMenuYear = d3.select("#selYear");
+
+  //drop duplicate years
+  const uniqueYears = [...new Set(data.map((disaster) => disaster.year))];
+  console.log(uniqueYears);
+
+  // Order the array in ascending order
+  const sortedYears = uniqueYears.sort((a, b) => a - b);
+
+  // Add options to the dropdown menu for each column name
+  sortedYears.map((year) => {
+    dropdownMenuYear.append("option").text(year).property("value", year);
   });
 
-  let country_data = data.slice(0,5727);
+  let country_data = data.slice(0, 5727);
   for (let i = 0; i < country_data.length; i++) {
-    let country = country_data[i]
+    let country = country_data[i];
     processCountryData(country);
   }
   // Log the data
-  console.log(data);
+  // console.log(data);
 });
 
-// loop through all the countries 
+// loop through all the countries
 function processCountryData(country_data) {
-  console.log(`Country: ${country_data.country}`);
-  console.log(`Coordinates: Latitude ${country_data.latitude}, Longitude ${country_data.longitude}`);
-  console.log(`Code: ${country_data.code}`);
-  console.log(`Year: ${country_data.year}`);
-  console.log(`Drought Deaths: ${country_data.drought_deaths}`);
-  console.log(`Flood Deaths: ${country_data.flood_deaths}`);
-  console.log(`Earthquake Deaths: ${country_data.earthquake_deaths}`);
-  console.log(`Extreme Weather Deaths: ${country_data.extreme_weather_deaths}`);
-  console.log(`Extreme Temperature Deaths: ${country_data.extreme_temp_deaths}`);
-  console.log(`Other Deaths: ${country_data.other_deaths}`);
-  L.circle([country_data.latitude, country_data.longitude],styleInfo(country_data)).addTo(map)
-    .bindPopup(); 
-    // getColor(country_data)
+  // console.log(`Country: ${country_data.country}`);
+  // console.log(
+  //   `Coordinates: Latitude ${country_data.latitude}, Longitude ${country_data.longitude}`
+  // );
+  // console.log(`Code: ${country_data.code}`);
+  // console.log(`Year: ${country_data.year}`);
+  // console.log(`Drought Deaths: ${country_data.drought_deaths}`);
+  // console.log(`Flood Deaths: ${country_data.flood_deaths}`);
+  // console.log(`Earthquake Deaths: ${country_data.earthquake_deaths}`);
+  // console.log(`Extreme Weather Deaths: ${country_data.extreme_weather_deaths}`);
+  // console.log(
+  //   `Extreme Temperature Deaths: ${country_data.extreme_temp_deaths}`
+  // );
+  // console.log(`Other Deaths: ${country_data.other_deaths}`);
+  L.circle(
+    [country_data.latitude, country_data.longitude],
+    styleInfo(country_data)
+  )
+    .addTo(map)
+    .bindPopup();
+  // getColor(country_data)
 }
 
 function getColor(country_data) {
-  console.log(typeof country_data);
-  let depth = country_data.extreme_temp_deaths
+  // console.log(typeof country_data);
+  let depth = country_data.extreme_temp_deaths;
   if (depth > 90) return "#FB1401";
   return "#038006";
 }
 
 function styleInfo(country_data) {
   return {
-    // USE STYLE ATTRIBUTES (e.g., opacity, fillOpacity, stroke, weight) 
+    // USE STYLE ATTRIBUTES (e.g., opacity, fillOpacity, stroke, weight)
     weight: 1,
-    opacity: 0.8, 
+    opacity: 0.8,
     fillOpacity: 0.35,
     fillColor: getColor,
-    color: getColor
+    color: getColor,
     // radius: getRadius(feature.properties.mag) // Pass magnitude to getRadius
   };
 }
@@ -59,19 +80,19 @@ function styleInfo(country_data) {
 // Loop through each country in the array and process its data
 // countriesData.forEach(processCountryData);
 
-          // // Set the first sample from the list
-          // let sample_one = names[0];
-  
-          // // Log the value of sample_one
-          // console.log(sample_one);
-  
-          // // Build the initial plots
-          // buildMetadata(sample_one);
-          // buildBarChart(sample_one);
-          // buildBubbleChart(sample_one);
-          // buildGaugeChart(sample_one);
-  
-  //     
+// // Set the first sample from the list
+// let sample_one = names[0];
+
+// // Log the value of sample_one
+// console.log(sample_one);
+
+// // Build the initial plots
+// buildMetadata(sample_one);
+// buildBarChart(sample_one);
+// buildBubbleChart(sample_one);
+// buildGaugeChart(sample_one);
+
+//
 
 // to parse the csv use below
 // let raw_data = "foo,bar,baz\n42,33,42\n12,76,54\n13,42,17";
@@ -82,21 +103,20 @@ function styleInfo(country_data) {
 
 // initialize world map title layer
 //   Initialize the map
- let map = L.map('map').setView([0, 0], 2);
+let map = L.map("map").setView([0, 0], 2);
 
-  // Add the base OpenStreetMap layer
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-  }).addTo(map);
+// Add the base OpenStreetMap layer
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+}).addTo(map);
 
-  // Add a marker
-  // L.marker([0, 0]).addTo(map)
-  //   .bindPopup('A sample popup.');
+// Add a marker
+// L.marker([0, 0]).addTo(map)
+//   .bindPopup('A sample popup.');
 
-// create drop down menu 
+// create drop down menu
 
-
-// Initialize the dashboard at start up 
+// Initialize the dashboard at start up
 // function init() {
 
 //     // Use D3 to select the dropdown menu
@@ -104,7 +124,7 @@ function styleInfo(country_data) {
 
 //     // Use D3 to get sample names and populate the drop-down selector
 //     d3.json(url).then((data) => {
-        
+
 //         // Set a variable for the sample names
 //         let disaster = data.;
 
@@ -132,7 +152,6 @@ function styleInfo(country_data) {
 //         buildGaugeChart(sample_one);
 
 //     });
-
 
 // // Function that populates metadata info
 // function buildMetadata(sample) {
@@ -194,7 +213,7 @@ function styleInfo(country_data) {
 //         let yticks = otu_ids.slice(0,10).map(id => `OTU ${id}`).reverse();
 //         let xticks = sample_values.slice(0,10).reverse();
 //         let labels = otu_labels.slice(0,10).reverse();
-        
+
 //         // Set up the trace for the bar chart
 //         let trace = {
 //             x: xticks,
@@ -219,7 +238,7 @@ function styleInfo(country_data) {
 
 //     // Use D3 to retrieve all of the data
 //     d3.json(url).then((data) => {
-        
+
 //         // Retrieve all sample data
 //         let sampleInfo = data.samples;
 
@@ -236,7 +255,7 @@ function styleInfo(country_data) {
 
 //         // Log the data to the console
 //         console.log(otu_ids,otu_labels,sample_values);
-        
+
 //         // Set up the trace for bubble chart
 //         let trace1 = {
 //             x: otu_ids,
@@ -263,12 +282,12 @@ function styleInfo(country_data) {
 // };
 
 // // Function that updates dashboard when sample is changed
-// function optionChanged(value) { 
+// function optionChanged(value) {
 
 //     // Log the new value
-//     console.log(value); 
+//     console.log(value);
 
-//     // Call all functions 
+//     // Call all functions
 //     buildMetadata(value);
 //     buildBarChart(value);
 //     buildBubbleChart(value);
