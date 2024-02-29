@@ -52,7 +52,8 @@ SELECT Country_Coordinates.country AS "country",
   Death_Rates.earthquake_deaths AS "earthquake_deaths", 
   Death_Rates.extreme_weather_deaths AS "extreme_weather_deaths", 
   Death_Rates.extreme_temp_deaths AS "extreme_temp_deaths", 
-  Death_Rates.other_deaths AS "other_deaths" 
+  Death_Rates.other_deaths AS "other_deaths",
+  Death_Rates.total_deaths AS "total_deaths" 
 FROM Country_Coordinates
 INNER JOIN Death_rates ON
 Country_Coordinates.country = Death_Rates.country;
