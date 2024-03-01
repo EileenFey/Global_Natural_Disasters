@@ -1,15 +1,21 @@
 // import csv w D3
 d3.csv("./joined_disaster_data.csv", (data) => {
-  console.log("text");
+  console.log(data);
   // Set a variable for the column names
   let disaster_type = data.columns;
   let dropdownMenu = d3.select("#selDataset");
-  console.log(disaster_type);
 
+  // let country_data = data.slice(0, 5727);
+  // console.log(country_data);
+  // for (let i = 0; i < country_data.length; i++) {
+  //   let country = country_data[i];
+  //   processCountryData(country);
+  // }
   // Add options to the dropdown menu for each column name
   disaster_type.slice(5, 11).map((header) => {
     dropdownMenu.append("option").text(header).property("value", header);
   });
+
   let dropdownMenuYear = d3.select("#selYear");
 
   //drop duplicate years
@@ -19,22 +25,60 @@ d3.csv("./joined_disaster_data.csv", (data) => {
   // Order the array in ascending order
   const sortedYears = uniqueYears.sort((a, b) => a - b);
 
-  // Add options to the dropdown menu for each column name
-  sortedYears.map((year) => {
+  // Populate the dropdown menu with sorted years
+  sortedYears.forEach((year) => {
     dropdownMenuYear.append("option").text(year).property("value", year);
   });
 
-  let country_data = data.slice(0, 5727);
-  for (let i = 0; i < country_data.length; i++) {
-    let country = country_data[i];
-    processCountryData(country);
-  }
-  // Log the data
-  // console.log(data);
+  // Initialize noUiSlider for the year slider
+  var slider = document.getElementById("year-slider");
+  noUiSlider.create(slider, {
+    start: parseInt(sortedYears[0]), // initial range of years
+    connect: true,
+    range: {
+      min: parseInt(sortedYears[0]),
+      max: parseInt(sortedYears[sortedYears.length - 1]),
+    },
+    step: 1,
+    pips: { mode: "steps" },
+  });
+  // When the slider is moved, update the map based on the selected year range
+  slider.noUiSlider.on("update", function (values, handle) {
+    // values contains the selected range [start, end]
+    //   var selectedYears = values.map((value) => parseInt(value));
+    //   updateMap(selectedYears);
+    console.log(parseInt(values[0]));
+    onYearChange(parseInt(values[0]));
+  });
+  // Function to handle changes in the dropdown menu
 });
+function optionChanged(disasterType) {
+  d3.csv("./joined_disaster_data.csv", (data) => {
+    data
+      .filter((disaster) => parseInt(disaster[disasterType]) > 0)
+      .forEach((selectedYearDisaster) =>
+        processCountryData(selectedYearDisaster)
+      );
+  });
+  // Update the map based on the selected year
+  // updateMap([selectedYear, selectedYear]);
+  console.log(disasterType);
+}
+function onYearChange(selectedYear) {
+  d3.csv("./joined_disaster_data.csv", (data) => {
+    data
+      .filter((disaster) => disaster.year == selectedYear)
+      .forEach((selectedYearDisaster) =>
+        processCountryData(selectedYearDisaster)
+      );
+  });
+}
+// function optionYearChanged(value)
+// console.log(value);
 
 // loop through all the countries
 function processCountryData(country_data) {
+  console.log({ country: country_data.country, year: country_data.year });
   // console.log(`Country: ${country_data.country}`);
   // console.log(
   //   `Coordinates: Latitude ${country_data.latitude}, Longitude ${country_data.longitude}`
@@ -55,11 +99,9 @@ function processCountryData(country_data) {
   )
     .addTo(map)
     .bindPopup();
-  // getColor(country_data)
 }
 
 function getColor(country_data) {
-  // console.log(typeof country_data);
   let depth = country_data.extreme_temp_deaths;
   if (depth > 90) return "#FB1401";
   return "#038006";
