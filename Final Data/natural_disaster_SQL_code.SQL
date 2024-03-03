@@ -1,0 +1,62 @@
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/2JWmAI
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+-- Changed order of tables from import and removed quotations from table and header names
+-- Simplified the primary and foreign key designations
+
+-- Drop the tables if they already exist
+DROP TABLE if EXISTS Country_Coordinates
+DROP TABLE if EXISTS Death_Rates
+
+-- Create the Country_coordinates table
+CREATE TABLE Country_Coordinates (
+    Country_code VARCHAR(3) NULL,
+    Latitude NUMERIC NULL,
+    Longitude NUMERIC NULL,
+    Country VARCHAR(1000) NULL,
+	PRIMARY KEY (Country)
+);
+
+-- CSV file of country coordinates imported here
+-- Run the select statement below to check import
+Select * from Country_Coordinates
+
+-- Create the Death_Rates table
+CREATE TABLE Death_Rates (
+    Country VARCHAR(1000)  NULL,
+    Code VARCHAR(3)   NULL,
+    Year INTEGER   NULL,
+    drought_deaths NUMERIC  NULL,
+    flood_deaths NUMERIC   NULL,
+    earthquake_deaths NUMERIC  NULL,
+    extreme_weather_deaths NUMERIC    NULL,
+    extreme_temp_deaths NUMERIC  NULL,
+    other_deaths NUMERIC  NULL,
+	total_deaths NUMERIC NULL,
+	FOREIGN KEY (Country) References Country_Coordinates(Country)
+);
+
+-- CSV file of death rates imported here
+-- Run the select statement below to check import
+Select * from Death_Rates
+
+--Join the two tables together
+-- Note, the 2 letter country code is omitted from the country_coordinates table
+-- In favor of the 3 letter code from the death_rates table
+SELECT Country_Coordinates.country AS "country", 
+  Country_Coordinates.latitude AS "latitude", 
+  Country_Coordinates.longitude AS "longitude", 
+  Death_Rates.code AS "code", 
+  Death_Rates.year AS "year",
+  Death_Rates.drought_deaths AS "drought_deaths", 
+  Death_Rates.flood_deaths AS "flood_deaths", 
+  Death_Rates.earthquake_deaths AS "earthquake_deaths", 
+  Death_Rates.extreme_weather_deaths AS "extreme_weather_deaths", 
+  Death_Rates.extreme_temp_deaths AS "extreme_temp_deaths", 
+  Death_Rates.other_deaths AS "other_deaths",
+  Death_Rates.total_deaths AS "total_deaths" 
+FROM Country_Coordinates
+INNER JOIN Death_rates ON
+Country_Coordinates.country = Death_Rates.country;
+
+-- The resulting table was saved to a CSV file
