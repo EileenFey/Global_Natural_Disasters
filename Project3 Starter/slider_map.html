@@ -23,6 +23,7 @@
           rel="stylesheet"
           href="https://unpkg.com/leaflet/dist/leaflet.css"
         />
+        <link rel="stylesheet" href="./style.css" />
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Include the timeline.js and JavaScript -->
         <link
@@ -35,6 +36,8 @@ https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css
 "
           rel="stylesheet"
         />
+        <!-- <js charts library -->
+        <script type="text/javascript" src="jscharts.js"></script>
         <!-- Include noUiSlider CSS and JavaScript -->
         <link
           rel="stylesheet"
@@ -56,10 +59,10 @@ https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.css
           <div id="map" style="height: 300px; width: 100vw"></div>
         </div>
         <div class="card card-body bg-light">
-          <h6>Deaths by Disaster</h6>
-          <select id="selDataset" onchange="optionChanged(this.value)"></select>
+          <h6>Filter by Year</h6>
+          <div id="year-slider"></div>
         </div>
-        <script src="./static/js/drop_down.js"></script>
+        <script src="./static/js/slider_map.js"></script>
       </body>
     </html>
   </head>
