@@ -1,0 +1,44 @@
+<head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Home Page</a></li>
+                    <li><a href="1900.html">1900 Stats</a></li>
+                    <li><a href="1980.html">1980 Stats</a></li>
+                    <li><a href="2005.html">2005 Stats</a></li>
+                    <li><a href="2023.html">2023 Stats</a></li>
+                    <li><a href="barChart_allDeaths.html">All Deaths Over Time</a></li>
+                </ul>
+            </nav>
+        </header>
+    </body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Natural Disasters</title>
+  <!-- Include Leaflet CSS and JavaScript -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    #map {
+      height: 400px;
+    }
+  </style>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+  <div>
+    <div id="map" style="height: 500px; width: 100vw;"></div>
+
+  </div>
+  <div class="card card-body bg-light">
+  <select id="selDataset" onchange="optionChanged(this.value)"></select>
+  </div>
+  <script src="./static/js/1980Code.js">
+
+  </script>
+
+</body>
+
+</html>
